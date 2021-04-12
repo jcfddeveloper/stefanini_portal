@@ -1,0 +1,73 @@
+<div>
+  <h2 id="page-heading" data-cy="PersonaHeading">
+    <span>Personas</span>
+
+    <div class="d-flex justify-content-end">
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-persona"
+        [routerLink]="['/persona/new']"
+      >
+        <span> Registrar Persona </span>
+      </button>
+    </div>
+  </h2>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="personas?.length === 0">
+    <span>No se encontraron registros</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="personas && personas.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+          <th scope="col" jhiSortBy="id"><span>ID</span></th>
+          <th scope="col" jhiSortBy="nombre"><span>Nombre</span></th>
+          <th scope="col" jhiSortBy="apellido"><span>Apellido</span></th>
+          <th scope="col" jhiSortBy="fechaNacimiento"><span>Fecha Nacimiento</span></th>
+          <th scope="col" jhiSortBy="username"><span>Username</span></th>
+          <th scope="col" jhiSortBy="password"><span>Password</span></th>
+          <th scope="col" jhiSortBy="identificacion"><span>Identificacion</span></th>
+          <th scope="col"></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let persona of personas;" >
+          <td>
+            <a [routerLink]="['/persona', persona.codigo, 'view']">{{ persona.codigo }}</a>
+          </td>
+          <td>{{ persona.nombre }}</td>
+          <td>{{ persona.apellido }}</td>
+          <td>{{ persona.fechaNacimiento | date:'dd/MM/yyyy' }}</td>
+          <td>{{ persona.userName }}</td>
+          <td>{{ hashPassword(persona.password) }}</td>
+          <td>{{ persona.identificacion }}</td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/persona/view', persona.codigo]"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <span class="d-none d-md-inline">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/persona/edit', persona.codigo]"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(persona)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
